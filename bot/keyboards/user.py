@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def get_main_menu() -> InlineKeyboardMarkup:
+def get_main_menu_kb() -> InlineKeyboardMarkup:
     """Главное меню"""
     keyboard = [
         [InlineKeyboardButton(text="🎯 Создать ставку", callback_data="create_bet")],
@@ -10,7 +10,7 @@ def get_main_menu() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_game_selection() -> InlineKeyboardMarkup:
+def get_game_selection_kb() -> InlineKeyboardMarkup:
     """Выбор игры"""
     keyboard = [
         [InlineKeyboardButton(text="🏀 Баскетбол", callback_data="game:basketball")],
@@ -20,7 +20,7 @@ def get_game_selection() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_basketball_variants() -> InlineKeyboardMarkup:
+def get_basketball_variants_kb() -> InlineKeyboardMarkup:
     """Варианты для баскетбола"""
     keyboard = [
         [InlineKeyboardButton(text="🏀 Вариант 1", callback_data="variant:basketball:1")],
@@ -30,7 +30,7 @@ def get_basketball_variants() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_football_variants() -> InlineKeyboardMarkup:
+def get_football_variants_kb() -> InlineKeyboardMarkup:
     """Варианты для футбола"""
     keyboard = [
         [InlineKeyboardButton(text="⚽ Вариант 1", callback_data="variant:football:1")],
@@ -40,7 +40,7 @@ def get_football_variants() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_fortune_variants() -> InlineKeyboardMarkup:
+def get_fortune_variants_kb() -> InlineKeyboardMarkup:
     """Варианты для колеса фортуны"""
     keyboard = [
         [InlineKeyboardButton(text="🎡 Красное", callback_data="variant:fortune:red")],
@@ -50,7 +50,7 @@ def get_fortune_variants() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_payment_confirmation(bet_id: int) -> InlineKeyboardMarkup:
+def get_payment_confirmation_kb(bet_id: int) -> InlineKeyboardMarkup:
     """Подтверждение оплаты"""
     keyboard = [
         [InlineKeyboardButton(text="✅ Я оплатил", callback_data=f"paid:{bet_id}")],
@@ -58,9 +58,16 @@ def get_payment_confirmation(bet_id: int) -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_back_button() -> InlineKeyboardMarkup:
+def get_back_button_kb() -> InlineKeyboardMarkup:
     """Кнопка назад"""
     keyboard = [
         [InlineKeyboardButton(text="◀️ Назад", callback_data="back_to_menu")]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+def get_cancel_kb() -> InlineKeyboardMarkup:
+    """Отмена"""
+    keyboard = [
+        [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel")]
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
