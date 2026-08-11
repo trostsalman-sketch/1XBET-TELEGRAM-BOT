@@ -20,7 +20,7 @@ def get_game_selection_kb() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_basketball_variants_kb() -> InlineKeyboardMarkup:
+def get_basketball_choice_kb() -> InlineKeyboardMarkup:
     """Варианты для баскетбола"""
     keyboard = [
         [InlineKeyboardButton(text="🏀 Вариант 1", callback_data="variant:basketball:1")],
@@ -30,7 +30,7 @@ def get_basketball_variants_kb() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_football_variants_kb() -> InlineKeyboardMarkup:
+def get_football_choice_kb() -> InlineKeyboardMarkup:
     """Варианты для футбола"""
     keyboard = [
         [InlineKeyboardButton(text="⚽ Вариант 1", callback_data="variant:football:1")],
@@ -40,7 +40,7 @@ def get_football_variants_kb() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_fortune_variants_kb() -> InlineKeyboardMarkup:
+def get_fortune_choice_kb() -> InlineKeyboardMarkup:
     """Варианты для колеса фортуны"""
     keyboard = [
         [InlineKeyboardButton(text="🎡 Красное", callback_data="variant:fortune:red")],
@@ -50,7 +50,7 @@ def get_fortune_variants_kb() -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_payment_confirmation_kb(bet_id: int) -> InlineKeyboardMarkup:
+def get_payment_kb(bet_id: int) -> InlineKeyboardMarkup:
     """Подтверждение оплаты"""
     keyboard = [
         [InlineKeyboardButton(text="✅ Я оплатил", callback_data=f"paid:{bet_id}")],
@@ -58,7 +58,7 @@ def get_payment_confirmation_kb(bet_id: int) -> InlineKeyboardMarkup:
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_back_button_kb() -> InlineKeyboardMarkup:
+def get_back_kb() -> InlineKeyboardMarkup:
     """Кнопка назад"""
     keyboard = [
         [InlineKeyboardButton(text="◀️ Назад", callback_data="back_to_menu")]
@@ -71,3 +71,24 @@ def get_cancel_kb() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel")]
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+# Дополнительные клавиатуры
+def get_basketball_variants_kb() -> InlineKeyboardMarkup:
+    """Алиас для get_basketball_choice_kb"""
+    return get_basketball_choice_kb()
+
+def get_football_variants_kb() -> InlineKeyboardMarkup:
+    """Алиас для get_football_choice_kb"""
+    return get_football_choice_kb()
+
+def get_fortune_variants_kb() -> InlineKeyboardMarkup:
+    """Алиас для get_fortune_choice_kb"""
+    return get_fortune_choice_kb()
+
+def get_payment_confirmation_kb(bet_id: int) -> InlineKeyboardMarkup:
+    """Алиас для get_payment_kb"""
+    return get_payment_kb(bet_id)
+
+def get_back_button_kb() -> InlineKeyboardMarkup:
+    """Алиас для get_back_kb"""
+    return get_back_kb()
