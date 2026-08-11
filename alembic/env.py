@@ -14,12 +14,12 @@ from bot.config import config as app_config
 
 config = context.config
 
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+# ЗАКОММЕНТИРОВАЛИ чтобы избежать ошибок
+# if config.config_file_name is not None:
+#     fileConfig(config.config_file_name)
 
 target_metadata = Base.metadata
 
-# ВАЖНО: Устанавливаем URL из app_config
 config.set_main_option("sqlalchemy.url", app_config.database_url)
 
 def run_migrations_offline() -> None:
