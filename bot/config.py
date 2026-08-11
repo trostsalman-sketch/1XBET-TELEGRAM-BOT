@@ -7,26 +7,13 @@ class Config:
     BOT_TOKEN: str = getenv("BOT_TOKEN", "")
     OWNER_ID: int = int(getenv("OWNER_ID", "0"))
     
-    # Database
-    DATABASE_URL: str = getenv("DATABASE_URL", "")
-    
     @property
     def database_url(self) -> str:
-        if not self.DATABASE_URL:
-            raise ValueError("DATABASE_URL environment variable is required")
-        
-        url = self.DATABASE_URL
-        
-        # Конвертируем postgres:// в postgresql+asyncpg://
-        if url.startswith("postgres://"):
-            url = url.replace("postgres://", "postgresql+asyncpg://", 1)
-        elif url.startswith("postgresql://"):
-            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
-        
-        return url
+        # ВРЕМЕННО: захардкоженный URL
+        return "postgresql+asyncpg://neondb_owner:npg_DvgoIX4Ceu9q@ep-flat-recipe-ay2dp5gt-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require"
     
     # Payment
-    PAYMENT_RECEIVER: str = getenv("PAYMENT_RECEIVER", "@Msk2314")
+    PAYMENT_RECEIVER: str = "@Msk2314"
     
     # Settings
     MIN_BET_AMOUNT: int = 10_000
