@@ -66,12 +66,11 @@ async def process_game_selection(callback: CallbackQuery, state: FSMContext, bet
     data = await state.get_data()
     amount = data['amount']
     
-    # Создаём ставку в БД
     bet = await bet_repo.create(
         user_id=callback.from_user.id,
         amount=amount,
         game=game,
-        choice=""  # Пока не выбран
+        choice=""
     )
     
     await state.update_data(bet_id=bet.id, game=game)
@@ -83,7 +82,6 @@ async def process_game_selection(callback: CallbackQuery, state: FSMContext, bet
         'fortune': '🎡 Фортуна'
     }
     
-    # Выбираем клавиатуру в зависимости от игры
     if game == 'basketball':
         kb = get_basketball_choice_kb(bet.id)
         await callback.message.edit_text(
@@ -118,13 +116,11 @@ async def process_choice(callback: CallbackQuery, state: FSMContext, bet_repo: B
     game = parts[2]
     choice = parts[3]
     
-    # Обновляем выбор в ставке
     bet = await bet_repo.get_by_id(bet_id)
     if not bet:
         await callback.answer("❌ Ставка не найдена", show_alert=True)
         return
     
-    # Сохраняем choice через SQL
     from sqlalchemy import update
     from bot.database.models import Bet
     stmt = update(Bet).where(Bet.id == bet_id).values(choice=choice)
@@ -168,4 +164,46 @@ async def process_payment_confirm(callback: CallbackQuery, state: FSMContext, be
         await callback.answer("❌ Ставка уже обработана", show_alert=True)
         return
     
-    # TODO: Здесь должна быть про
+    import uuid
+    transaction_id = str(uuid.uuid4())
+    
+    await bet_repo.activate_bet(bet_id, transaction_id)
+    
+    bet_service = BetService(bet_repo)
+    result = await bet_service.play_bet(bet_id)
+    
+    if not result:
+        await callback.answer("❌ Ошибка обработки ставки", show_alert=True)
+        return
+    
+    if result['is_win']:
+        result_text = f"🎉 ПОБЕДА!\n\n{result['result']}\n\nВы выиграли {bet.amount:,} ₽!"
+    else:
+        result_text = f"😔 Проигрыш\n\n{result['result']}\n\nВ следующий раз повезёт!"
+    
+    await callback.message.edit_text(result_text)
+    await state.clear()
+    await callback.answer()
+
+@router.callback_query(F.data.startswith("cancel:"))
+async def process_cancel(callback: CallbackQuery, state: FSMContext, bet_repo: BetRepository):
+    bet_id = int(callback.data.split(":")[1])
+    
+    bet = await bet_repo.get_by_id(bet_id)
+    if not bet or bet.user_id != callback.from_user.id:
+        await callback.answer("❌ Ставка не найдена", show_alert=True)
+        return
+    
+    if bet.status != 'pending':
+        await callback.answer("❌ Ставка уже обработана", show_alert=True)
+        return
+    
+    from sqlalchemy import update
+    from bot.database.models import Bet
+    stmt = update(Bet).where(Bet.id == bet_id).values(status='cancelled')
+    await bet_repo.session.execute(stmt)
+    await bet_repo.session.commit()
+    
+    await callback.message.edit_text("❌ Ставка отменена.")
+    await state.clear()
+    await callback.answer()
