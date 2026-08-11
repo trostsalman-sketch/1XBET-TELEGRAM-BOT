@@ -7,7 +7,6 @@ import asyncio
 import os
 import sys
 
-# Добавляем корневую директорию в путь
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 
 from bot.database.models import Base
@@ -20,6 +19,7 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+# ВАЖНО: Устанавливаем URL из app_config
 config.set_main_option("sqlalchemy.url", app_config.database_url)
 
 def run_migrations_offline() -> None:
